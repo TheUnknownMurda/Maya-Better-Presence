@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#C8323F"/>
+  <!-- Two joints and the bone between them, drawn as in Maya -->
+  <polygon points="381.6,642.4 494.8,628.2 642.4,381.6 395.8,529.2" fill="#FFFFFF"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="48">
+    <circle cx="318" cy="706" r="90"/>
+    <circle cx="706" cy="318" r="90"/>
+  </g>
+</svg>

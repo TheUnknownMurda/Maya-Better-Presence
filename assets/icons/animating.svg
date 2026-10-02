@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#D9731A"/>
+  <!-- An animation curve between two keys -->
+  <path d="M 290 690 C 470 690 554 334 734 334" fill="none" stroke="#FFFFFF" stroke-width="56" stroke-linecap="round"/>
+  <g fill="#FFFFFF" stroke="#D9731A" stroke-width="24" stroke-linejoin="round">
+    <polygon points="290,592 388,690 290,788 192,690"/>
+    <polygon points="734,236 832,334 734,432 636,334"/>
+  </g>
+</svg>

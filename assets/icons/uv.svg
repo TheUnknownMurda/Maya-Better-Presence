@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#1E9258"/>
+  <!-- A checker texture, as used to check UVs -->
+  <rect x="262" y="262" width="500" height="500" rx="56" fill="#FFFFFF"/>
+  <g fill="#1E9258">
+    <rect x="442" y="302" width="140" height="140"/>
+    <rect x="302" y="442" width="140" height="140"/>
+    <rect x="582" y="442" width="140" height="140"/>
+    <rect x="442" y="582" width="140" height="140"/>
+  </g>
+</svg>

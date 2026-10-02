@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#2E6BD8"/>
+  <!-- A cube with its top, left and right faces lit differently -->
+  <polygon points="512,232 754.5,372 512,512 269.5,372" fill="#FFFFFF"/>
+  <polygon points="269.5,372 512,512 512,792 269.5,652" fill="#FFFFFF" fill-opacity="0.72"/>
+  <polygon points="512,512 754.5,372 754.5,652 512,792" fill="#FFFFFF" fill-opacity="0.45"/>
+  <g stroke="#2E6BD8" stroke-width="24">
+    <line x1="512" y1="512" x2="269.5" y2="372"/>
+    <line x1="512" y1="512" x2="754.5" y2="372"/>
+    <line x1="512" y1="512" x2="512" y2="792"/>
+  </g>
+</svg>

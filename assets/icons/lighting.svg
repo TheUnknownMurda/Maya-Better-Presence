@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#A87F00"/>
+  <!-- A light bulb -->
+  <path d="M 512 236 C 616 236 700 320 700 424 C 700 494 662 540 628 578 C 606 602 596 626 596 652 L 428 652 C 428 626 418 602 396 578 C 362 540 324 494 324 424 C 324 320 408 236 512 236 Z" fill="#FFFFFF"/>
+  <rect x="428" y="676" width="168" height="40" rx="20" fill="#FFFFFF"/>
+  <rect x="450" y="738" width="124" height="40" rx="20" fill="#FFFFFF"/>
+</svg>

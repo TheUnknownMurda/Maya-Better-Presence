@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#2D3854"/>
+  <!-- A crescent moon and two stars -->
+  <path d="M 467.7 266 A 250 250 0 1 0 742.3 609.2 A 220 220 0 0 1 467.7 266 Z" fill="#FFD97A"/>
+  <path d="M 700 230 L 716 274 L 760 290 L 716 306 L 700 350 L 684 306 L 640 290 L 684 274 Z" fill="#FFD97A"/>
+  <circle cx="790" cy="420" r="18" fill="#FFD97A"/>
+</svg>

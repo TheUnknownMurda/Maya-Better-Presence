@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#0E8A9C"/>
+  <!-- A drop of liquid -->
+  <path d="M 512 240 C 474 322 322 456 322 600 A 190 190 0 0 0 702 600 C 702 456 550 322 512 240 Z" fill="#FFFFFF"/>
+  <path d="M 410 590 A 110 110 0 0 0 462 690" fill="none" stroke="#0E8A9C" stroke-opacity="0.45" stroke-width="40" stroke-linecap="round"/>
+</svg>

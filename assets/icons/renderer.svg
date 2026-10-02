@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#505A6E"/>
+  <!-- Any renderer without its own icon: the Utah teapot -->
+  <g transform="translate(512 512) scale(0.86) translate(-546 -553)">
+    <path d="M 300 600 C 300 480 400 440 512 440 C 624 440 724 480 724 600 C 724 700 650 750 512 750 C 374 750 300 700 300 600 Z" fill="#FFFFFF"/>
+    <path d="M 412 446 C 420 392 604 392 612 446 Z" fill="#FFFFFF"/>
+    <circle cx="512" cy="385" r="28" fill="#FFFFFF"/>
+    <line x1="400" y1="449" x2="624" y2="449" stroke="#505A6E" stroke-width="18"/>
+    <path d="M 712 640 C 780 630 790 520 846 470 C 856 462 872 462 878 474 C 832 540 820 660 720 700 Z" fill="#FFFFFF"/>
+    <path d="M 312 540 C 210 520 190 680 318 668" fill="none" stroke="#FFFFFF" stroke-width="46" stroke-linecap="round"/>
+  </g>
+</svg>

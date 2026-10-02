@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#D9481C"/>
+  <!-- A strip of film being played -->
+  <rect x="232" y="302" width="560" height="420" rx="56" fill="#FFFFFF"/>
+  <g fill="#D9481C">
+    <rect x="262" y="334" width="48" height="36" rx="8"/>
+    <rect x="375" y="334" width="48" height="36" rx="8"/>
+    <rect x="488" y="334" width="48" height="36" rx="8"/>
+    <rect x="601" y="334" width="48" height="36" rx="8"/>
+    <rect x="714" y="334" width="48" height="36" rx="8"/>
+    <rect x="262" y="654" width="48" height="36" rx="8"/>
+    <rect x="375" y="654" width="48" height="36" rx="8"/>
+    <rect x="488" y="654" width="48" height="36" rx="8"/>
+    <rect x="601" y="654" width="48" height="36" rx="8"/>
+    <rect x="714" y="654" width="48" height="36" rx="8"/>
+    <polygon points="470,438 470,586 594,512" stroke="#D9481C" stroke-width="24" stroke-linejoin="round"/>
+  </g>
+</svg>

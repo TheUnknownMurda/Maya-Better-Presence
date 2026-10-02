@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#7A4AC4"/>
+  <!-- A shader ball, lit from the top left -->
+  <circle cx="512" cy="512" r="260" fill="#FFFFFF"/>
+  <path d="M 645.25 288.75 A 260 260 0 1 1 288.75 645.25 A 260 260 0 0 0 645.25 288.75 Z" fill="#7A4AC4" fill-opacity="0.4"/>
+</svg>

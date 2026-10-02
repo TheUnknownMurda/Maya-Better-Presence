@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <circle cx="512" cy="512" r="512" fill="#5E9A1E"/>
+  <!-- A paintbrush -->
+  <g transform="rotate(45 512 512)" fill="#FFFFFF">
+    <rect x="484" y="150" width="56" height="306" rx="28"/>
+    <rect x="460" y="470" width="104" height="96" rx="14"/>
+    <path d="M 460 580 L 564 580 C 564 690 552 780 512 870 C 472 780 460 690 460 580 Z"/>
+  </g>
+</svg>
