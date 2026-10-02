@@ -1,11 +1,11 @@
-# Discord Rich Presence for Maya
+# Maya Better Presence
 
-Shows what you are doing in Autodesk Maya in your Discord status: the current task, the scene, the project and how long you've been working.
+Discord Rich Presence for Autodesk Maya. Shows what you are doing in Maya in your Discord status: the current task, the scene, the project and how long you've been working.
 
 > An improved version of [Discord-Rich-Presence-For-Maya](https://github.com/aronamao/Discord-Rich-Presence-For-Maya) by Aron Amao, with new features and Maya 2027 support.
 
 > [!WARNING]
-> **Maya 2023 to 2026:** this improved version has not been tested on these versions yet. Please report any problem by [opening an issue](https://github.com/TheUnknownMurda/Discord-Rich-Presence-For-Maya/issues) so I can fix it.
+> **Maya 2023 to 2026:** this improved version has not been tested on these versions yet. Please report any problem by [opening an issue](https://github.com/TheUnknownMurda/Maya-Better-Presence/issues) so I can fix it.
 > In the meantime, you can use the [original plug-in](https://github.com/aronamao/Discord-Rich-Presence-For-Maya/releases/latest), which is tested and works on Maya 2023 to 2026. [Uninstall](#uninstalling) this version first.
 
 ## What's new compared to the original
@@ -29,7 +29,9 @@ Shows what you are doing in Autodesk Maya in your Discord status: the current ta
 
 ## Installing
 
-1. Download the `.zip` file from the [latest release](https://github.com/TheUnknownMurda/Discord-Rich-Presence-For-Maya/releases/latest) and **extract it**: right-click > **Extract All**. Don't run the installer from inside the zip.
+1. From the [latest release](https://github.com/TheUnknownMurda/Maya-Better-Presence/releases/latest), download the zip for your Maya version
+   (`...-Maya2027.zip` for Maya 2027, for example), or the zip without a Maya version in its name, which contains every version.
+   Then **extract it**: right-click > **Extract All**. Don't run the installer from inside the zip.
 2. Open Maya.
 3. Drag and drop `installer.py` from the extracted folder onto the Maya window, over the 3D view.
 4. Click **Install**.
@@ -45,7 +47,8 @@ Your status shows up in Discord within a few seconds. From then on, the plug-in 
 2. In Maya, drag and drop `installer.py` and click **Install**.
 3. Restart Maya when the installer asks you to.
 
-Your settings are kept.
+Your settings are kept. If you use several versions of Maya, installing the zip of one version
+doesn't remove the others.
 
 ## Settings
 
@@ -100,7 +103,8 @@ Example: `{task} on {scene}` shows "Modeling on hero.ma".
 
   The built plug-in is copied to `module/plug-ins/<version>`. The original CMake files are still there, but haven't been tested with this version.
 - **Changing the wording** of the task and statistics: edit `module/scripts/RichPresenceUI/context.py`, no rebuild needed.
-- **Distributing**: zip `installer.py`, the `module` folder and this `README.md`.
+- **Distributing**: `python package.py 2.1` builds the release zips in `dist/`: one with every Maya version,
+  and one per Maya version. Attach them to a GitHub release.
 
 ## Credits
 

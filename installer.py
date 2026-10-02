@@ -32,6 +32,10 @@ discord_processes = ("discord.exe", "discordptb.exe", "discordcanary.exe")
 
 preserved_files = ("config.ini",)
 
+# Every Maya version the plug-in is built for. A download can hold only some of them.
+supported_versions = ("2023", "2024", "2025", "2026", "2027")
+releases_url = "https://github.com/TheUnknownMurda/Maya-Better-Presence/releases/latest"
+
 
 class PluginBlocked(Exception):
     """Maya didn't load the plug-in, usually because Deny was clicked in its security warning."""
@@ -100,10 +104,16 @@ class Installer(QtWidgets.QDialog):
             self.button.setEnabled(False)
             return
 
-        versions = list(self.find_versions())
+        versions = sorted(self.find_versions(self.plugin_dir))
+        if self.maya_version not in versions and self.maya_version in supported_versions:
+            self.console.error(f"This download is for Maya {', '.join(versions)}, not Maya {self.maya_version}.\n\n"
+                               f"Download the zip for Maya {self.maya_version}, or the one for all versions, from:\n"
+                               f"{releases_url}", clear=True)
+            self.button.setEnabled(False)
+            return
         if self.maya_version not in versions:
             self.console.error(f"Maya {self.maya_version} is not supported yet.\n\n"
-                               f"Supported versions: {', '.join(versions)}", clear=True)
+                               f"Supported versions: {', '.join(supported_versions)}", clear=True)
             self.button.setEnabled(False)
             return
 
@@ -126,9 +136,11 @@ class Installer(QtWidgets.QDialog):
         already_loaded = cmds.pluginInfo(plugin_name, query=True, loaded=True)
         try:
             self.remove_old_files()
-            self.write_module_file()
             self.changed_files = []
             shutil.copytree(self.source_dir, self.target_dir, dirs_exist_ok=True, copy_function=self.copy_if_changed)
+            # Written after copying, so it lists every version installed so far: installing the zip for one
+            # version must not drop the versions installed earlier from another zip
+            self.write_module_file()
             self.activate_plugin()
         except PluginBlocked:
             traceback.print_exc()
@@ -197,7 +209,8 @@ class Installer(QtWidgets.QDialog):
                     pass
 
     def write_module_file(self):
-        module = "\n".join(self.format_template(version) for version in self.find_versions())
+        installed = sorted(self.find_versions(self.target_dir / "plug-ins"))
+        module = "\n".join(self.format_template(version) for version in installed)
         self.maya_module_dir.mkdir(parents=True, exist_ok=True)
         with open(self.module_file, 'w', encoding="utf-8") as f:
             f.write(module)
@@ -222,10 +235,12 @@ class Installer(QtWidgets.QDialog):
         cmds.pluginInfo(plugin_name, edit=True, autoload=True)
         cmds.pluginInfo(savePluginPrefs=True)
 
-    def find_versions(self):
-        for version in self.plugin_dir.iterdir():
-            if version.is_dir():
-                yield version.stem
+    @staticmethod
+    def find_versions(plugin_dir):
+        """Maya versions with a built plug-in in plug-ins/<version>."""
+        for version in plugin_dir.iterdir():
+            if (version / f"{plugin_name}.mll").is_file():
+                yield version.name
 
     def format_template(self, version):
         return module_template.format(version=version, module_name=module_name)
