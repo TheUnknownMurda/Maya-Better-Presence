@@ -32,6 +32,12 @@ public:
 		MGlobal::executePythonCommand("from RichPresenceUI import RichPresenceUI\nRichPresenceUI.add_menu()");
 	}
 
+	// Text settings are read by Python, which decodes config.ini the same way it was written
+	inline static void ApplySavedSettings()
+	{
+		MGlobal::executePythonCommand("from RichPresenceUI import RichPresenceUI\nRichPresenceUI.apply_saved_settings()");
+	}
+
 	inline static void RemoveMenu()
 	{
 		MGlobal::executePythonCommand("from RichPresenceUI import RichPresenceUI\nRichPresenceUI.remove_menu()");

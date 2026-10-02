@@ -80,3 +80,6 @@
 /module/bin
 /module/plug-ins/DRPForMaya.mll
 *.mll
+
+# Distribution zips, published as GitHub releases
+/dist/

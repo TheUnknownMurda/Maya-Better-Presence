@@ -8,8 +8,9 @@ add_subdirectory(src)
 
 
 set(DISCORD_SDK_ROOT "${CMAKE_SOURCE_DIR}/third_party/discord_social_sdk")
-set(DISCORD_SDK_LIB_DIR "${DISCORD_SDK_ROOT}/lib/$<CONFIG>")
-set(DISCORD_SDK_BIN_DIR "${DISCORD_SDK_ROOT}/bin/$<CONFIG>")
+# Only the release SDK ships with this project: its debug build is 30 MB and only adds logging
+set(DISCORD_SDK_LIB_DIR "${DISCORD_SDK_ROOT}/lib/release")
+set(DISCORD_SDK_BIN_DIR "${DISCORD_SDK_ROOT}/bin/release")
 set(DISCORD_SDK_INCLUDE_DIR "${DISCORD_SDK_ROOT}/include")
 
 
@@ -31,6 +32,15 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${DISCORD_SDK_INCLUDE_DIR})
 
 # Link the Social SDK library
 target_link_libraries(${PROJECT_NAME} ${DISCORD_LIB_PATH})
+
+# Idle detection reads the last keyboard and mouse input
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} user32)
+endif()
+
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
+endif()
 
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/third_party/mini)

@@ -42,3 +42,13 @@ QMenu::item {
 QMenu::item:selected {
     background-color: rgb(88, 101, 242);
 }
+QLineEdit {
+    background-color: rgb(40, 40, 40);
+    padding: 3px;
+    border: 1px solid rgb(50, 50, 50);
+    border-radius: 2px;
+}
+
+QLineEdit:focus {
+    border: 1px solid rgb(88, 101, 242);
+}

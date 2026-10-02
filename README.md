@@ -1,56 +1,108 @@
-# Rich Presence for Autodesk Maya
+# Discord Rich Presence for Maya
 
-![image](https://github.com/user-attachments/assets/97085773-4c72-4a26-97f2-c11133ac9e9c)
+Shows what you are doing in Autodesk Maya in your Discord status: the current task, the scene, the project and how long you've been working.
 
-This plug-in will update your status on Discord depending on your scene and project.
+> An improved version of [Discord-Rich-Presence-For-Maya](https://github.com/aronamao/Discord-Rich-Presence-For-Maya) by Aron Amao, with new features and Maya 2027 support.
 
-Currently has been tested in Maya 2023-2026. Earlier versions could work, but compatibility is not guaranteed and compiled binaries won't be provided.
+> [!WARNING]
+> **Maya 2023 to 2026:** this improved version has not been tested on these versions yet. Please report any problem by [opening an issue](https://github.com/TheUnknownMurda/Discord-Rich-Presence-For-Maya/issues) so I can fix it.
+> In the meantime, you can use the [original plug-in](https://github.com/aronamao/Discord-Rich-Presence-For-Maya/releases/latest), which is tested and works on Maya 2023 to 2026. [Uninstall](#uninstalling) this version first.
 
-### V2 Disclaimer
-With v2, the plug-in has been updated to make use of Discord's Social Sdk. While this should overall work better and support more features, there have been some minor regressions. Primarily the ability to hide the timestamp is completely gone.
-The Maya version is also not displayed anymore as every version requires a separate registered application, so this was simplified.
+## What's new compared to the original
 
-Latest compiled release available [here](https://github.com/aronamao/Discord-Rich-Presence-For-Maya/releases/latest)
+- **Maya 2027** support, on top of 2023 to 2026.
+- **Current task** shown: Modeling, Sculpting, UV editing, Animating, Rendering…
+- **Scene statistics** ("12 objects · 45.2k polygons") when no project is set.
+- **Unsaved changes** marked with a `*` after the scene name.
+- **Custom text** for each line, with placeholders.
+- **Idle detection**: shows "Idle" or hides your status, and the time away isn't counted.
+- **Button** with a link, to your portfolio for example.
+- **Maya logo**, with the Maya version and renderer on hover.
+- **One-click install** with no restart, and updates that keep your settings.
+- **Fixes**: names with accents, "Save As", settings turning themselves back on, crash when reloading the plug-in, install failing when the Windows user name contains an accent.
 
-## Installation
+## Requirements
 
-Simply download the release .zip and extract the contents to a location of your choice. From there open Maya and drag'n'drop the installer.py file into your Maya window. A new dialog should pop-up:
+- Windows
+- Maya 2023, 2024, 2025, 2026 or 2027
+- The **Discord desktop app**, running. Discord in a web browser doesn't work.
 
-![image](https://github.com/user-attachments/assets/01c7273b-a153-4cd4-845a-672020dcd3ab)
+## Installing
 
-Simply hit install.
+1. Download the `.zip` file from the [latest release](https://github.com/TheUnknownMurda/Discord-Rich-Presence-For-Maya/releases/latest) and **extract it**: right-click > **Extract All**. Don't run the installer from inside the zip.
+2. Open Maya.
+3. Drag and drop `installer.py` from the extracted folder onto the Maya window, over the 3D view.
+4. Click **Install**.
+5. Maya shows the **Untrusted Plugin Loading** warning: tick **Apply to all plugins in this location**, then click **Allow**.
+   This warning is normal: Maya shows it for every plug-in not made by Autodesk.
+6. Click **Close**.
+
+Your status shows up in Discord within a few seconds. From then on, the plug-in loads by itself every time Maya starts.
+
+## Updating
+
+1. Extract the new version.
+2. In Maya, drag and drop `installer.py` and click **Install**.
+3. Restart Maya when the installer asks you to.
+
+Your settings are kept.
+
+## Settings
+
+**Rich Presence > Settings**, in Maya's menu bar.
+
+| Setting | What it does |
+|---|---|
+| **Details** | Shows the scene name. |
+| **Task** | Shows the current task. |
+| **State** | Shows the project, or scene statistics when no project is set. |
+| **Reset Time With Scene** | Resets the timer when a scene is opened. |
+| **Custom Text** | Replaces the first or second line with your own text. Leave it empty for the automatic text. |
+| **Idle** | After the chosen time without using Maya: shows "Idle", hides your status, or does nothing. The timer pauses. |
+| **Custom Text While Idle** | Keeps your custom text while idle. |
+| **Button** | Adds a button with a link. Your friends see it, but Discord doesn't show it to you. |
+
+Placeholders for the custom text:
+
+| Placeholder | Replaced by |
+|---|---|
+| `{task}` | the current task ("Idle" while idle) |
+| `{scene}` | the scene name |
+| `{project}` | the project name |
+| `{stats}` | the scene statistics |
+
+Example: `{task} on {scene}` shows "Modeling on hero.ma".
+
+**To hide your status**, unload `DRPForMaya.mll` in **Windows > Settings/Preferences > Plug-in Manager**.
 
 ## Uninstalling
-Delete everything named DRPForMaya in your maya modules folder (Documents/maya/modules).
 
-## Details
-Once you enable the "DRPForMaya.mll" plug-in in the plug-in manager your discord status should immediately update.
-A new menu will be registered, which you can use to open the settings:
+1. Close Maya.
+2. Open the `Documents\maya\modules` folder.
+3. Delete the `DRPForMaya.mod` file and the `DRPForMaya` folder.
 
-![image](https://github.com/user-attachments/assets/5262e7f8-0a4f-4a92-ac5e-532d6ed54617)
+## Troubleshooting
 
-There's a few options that can be changed:
+| Problem | Solution |
+|---|---|
+| My status doesn't show up | Open the Discord desktop app. In Discord, make sure sharing your activity is turned on in **User Settings > Activity Privacy**. |
+| "Could not find the 'module' folder" | The zip wasn't extracted. Extract it, then drag `installer.py` from the extracted folder. |
+| "Maya 20XX is not supported yet" | This version of Maya isn't supported. |
+| I clicked **Deny** | Run the installer again and click **Allow**. |
+| A placeholder is shown as is, like `{task]` | Check the spelling and the braces: `{task}`. |
 
-![image](https://github.com/user-attachments/assets/05ef115d-f37d-4bb9-9598-64234a1e773c)
+## For developers
 
-If you want to hide your status you will just need to disable the plug-in.
+- `src/`: the plug-in's C++ code. `module/`: what gets installed in Maya. `installer.py`: the installer.
+- **Building** (Visual Studio 2022 with the C++ tools):
+  - `build.bat 2027` builds for the Maya 2027 installed on the machine;
+  - `build.bat 2025 C:\maya_devkits\2025\devkitBase` builds with a [Maya devkit](https://aps.autodesk.com/developer/overview/maya).
 
-## Building
+  The built plug-in is copied to `module/plug-ins/<version>`. The original CMake files are still there, but haven't been tested with this version.
+- **Changing the wording** of the task and statistics: edit `module/scripts/RichPresenceUI/context.py`, no rebuild needed.
+- **Distributing**: zip `installer.py`, the `module` folder and this `README.md`.
 
-The project is built with CMake 3.31+
+## Credits
 
-### Step-By-Step build
-As the target location I will use C:\RichPresence
-
-1. Get the maya devkit for and extract it to any location. Where exactly doesn't matter, but it should follow this pattern:
-   **path_of_your_choice/version/devkitBase**. So for example: **E:/maya_devkits/2025/devkitBase**
-   This is done for convenience, so it's easier to build different versions
-2. clone the repo to your target location via `git clone https://github.com/aronamao/Discord-Rich-Presence-For-Maya.git C:\RichPresence`
-3. `cd **C:\RichPresence**`
-4. `mkdir ./out`
-5. `cmake -B out -G "Visual Studio 17 2022"  -DMAYA_VERSION:STRING="2025" -DDEVKIT_LOCATION:STRING="E:/maya_devkits"` You have to provide a devkit location and maya_version.
-6. `cmake --build --preset=Release --target install`
-7. Repeat step 5 and 6 for all desired versions
-
-Once you run the install, all needed files should be moved into the module folder. Afterwards you can simply run the installer.py by drag-n-dropping it into Maya.
-I would usually recommend to build the Release version to avoid some debugging verbosity.
+- Original plug-in: [Aron Amao](https://github.com/aronamao/Discord-Rich-Presence-For-Maya)
+- Uses the [Discord Social SDK](https://discord.com/developers/docs/discord-social-sdk/overview)
