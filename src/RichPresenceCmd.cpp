@@ -6,6 +6,13 @@ MStatus RichPresenceCmd::doIt(const MArgList& argList)
 	const MArgDatabase argData(syntax(), argList, &status);
 	CHECK_MSTATUS_AND_RETURN_IT(status);
 
+	// The settings window reads what Discord is shown, without changing anything
+	if (argData.isFlagSet("-pv"))
+	{
+		setResult(ptr->Preview());
+		return MS::kSuccess;
+	}
+
 	ptr->BlockUpdates();
 
 	if (argData.isFlagSet("-d"))
@@ -108,6 +115,33 @@ MStatus RichPresenceCmd::doIt(const MArgList& argList)
 			ptr->SetCustomTextWhileIdle(keep);
 		}
 	}
+	if (argData.isFlagSet("-si"))
+	{
+		MString icon;
+		status = argData.getFlagArgument("-si", 0, icon);
+		ptr->SetSmallIcon(icon);
+	}
+	if (argData.isFlagSet("-siu"))
+	{
+		MString url;
+		status = argData.getFlagArgument("-siu", 0, url);
+		ptr->SetCustomIconUrl(url);
+	}
+	if (argData.isFlagSet("-sit"))
+	{
+		MString text;
+		status = argData.getFlagArgument("-sit", 0, text);
+		ptr->SetCustomIconText(text);
+	}
+	if (argData.isFlagSet("-en"))
+	{
+		bool enabled;
+		status = argData.getFlagArgument("-en", 0, enabled);
+		if (status == MStatus::kSuccess)
+		{
+			ptr->SetStatusEnabled(enabled);
+		}
+	}
 
 	ptr->UnblockUpdates();
 	ptr->Update();
@@ -135,5 +169,14 @@ MSyntax RichPresenceCmd::NewSyntax()
 	syntax.addFlag("-cd", "-customDetails", MSyntax::kString);
 	syntax.addFlag("-cs", "-customState", MSyntax::kString);
 	syntax.addFlag("-ci", "-customTextWhileIdle", MSyntax::kBoolean);
+	// Small icon over the Maya logo: "task", "renderer", "custom" or "none"
+	syntax.addFlag("-si", "-smallIcon", MSyntax::kString);
+	// Link and text of the custom small icon, the text with the same placeholders as the custom text
+	syntax.addFlag("-siu", "-smallIconUrl", MSyntax::kString);
+	syntax.addFlag("-sit", "-smallIconText", MSyntax::kString);
+	// Shows or hides the status, as the switch of the settings window and the Rich Presence menu do
+	syntax.addFlag("-en", "-enabled", MSyntax::kBoolean);
+	// Returns what Discord is shown, as "name=value" lines, for the settings window's preview
+	syntax.addFlag("-pv", "-preview", MSyntax::kNoArg);
 	return syntax;
 }

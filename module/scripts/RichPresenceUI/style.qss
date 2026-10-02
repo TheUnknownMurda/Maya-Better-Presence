@@ -1,54 +1,259 @@
-QDialog {
-    background-color: rgb(25, 25, 25);
+/* Settings window, in the colors of Discord's dark theme since it is about a Discord status */
+
+#RichPresenceSettings {
+    background-color: #1E1F22;
 }
 
-QPushButton {
-    background-color: rgb(40, 40, 40);
-    padding: 4px;
-    border: 1px solid rgb(50, 50, 50);
-    border-radius: 2px;
+#RichPresenceSettings QLabel {
+    color: #DBDEE1;
+    font-size: 9pt;
 }
 
-QPushButton:hover {
-    background-color: rgb(65, 65, 65);
+#RichPresenceSettings QLabel#title {
+    color: #F2F3F5;
+    font-size: 14pt;
+    font-weight: bold;
 }
 
-QPushButton:pressed {
-    background-color: rgb(40, 40, 40);
+#RichPresenceSettings QLabel#subtitle,
+#RichPresenceSettings QLabel#hint {
+    color: #B5BAC1;
 }
 
-Separator {
-
+#RichPresenceSettings QLabel#sectionLabel {
+    color: #949BA4;
+    font-size: 8pt;
+    font-weight: bold;
 }
 
-QMenuBar {
-    background-color: rgb(32, 32, 32);
+#RichPresenceSettings QLabel#warning {
+    color: #F0B232;
 }
 
-QMenuBar::item::selected {
-    background-color: rgb(88, 101, 242);
+#RichPresenceSettings QLabel#error {
+    color: #FA777C;
 }
 
-QMenu {
-    background-color: #333333;
-    color: white;
+#RichPresenceSettings QFrame#card {
+    background-color: #2B2D31;
+    border-radius: 8px;
 }
 
-QMenu::item {
+#RichPresenceSettings QLabel#cardTitle {
+    color: #F2F3F5;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#RichPresenceSettings QLabel#switchLabel {
+    color: #F2F3F5;
+}
+
+#RichPresenceSettings QLineEdit,
+#RichPresenceSettings QSpinBox {
+    background-color: #1E1F22;
+    color: #F2F3F5;
+    border: 1px solid #3F4147;
+    border-radius: 4px;
+    padding: 5px 7px;
+    selection-background-color: #5865F2;
+}
+
+#RichPresenceSettings QLineEdit:focus,
+#RichPresenceSettings QSpinBox:focus {
+    border-color: #5865F2;
+}
+
+#RichPresenceSettings QSpinBox {
+    padding-right: 22px;
+}
+
+#RichPresenceSettings QSpinBox::up-button,
+#RichPresenceSettings QSpinBox::down-button {
+    subcontrol-origin: border;
+    width: 20px;
+    border: none;
     background-color: transparent;
-    padding: 3px 11px;
 }
 
-QMenu::item:selected {
-    background-color: rgb(88, 101, 242);
-}
-QLineEdit {
-    background-color: rgb(40, 40, 40);
-    padding: 3px;
-    border: 1px solid rgb(50, 50, 50);
-    border-radius: 2px;
+#RichPresenceSettings QSpinBox::up-button {
+    subcontrol-position: top right;
 }
 
-QLineEdit:focus {
-    border: 1px solid rgb(88, 101, 242);
+#RichPresenceSettings QSpinBox::down-button {
+    subcontrol-position: bottom right;
+}
+
+#RichPresenceSettings QSpinBox::up-button:hover,
+#RichPresenceSettings QSpinBox::down-button:hover {
+    background-color: #35373C;
+}
+
+/* {icons} is replaced by the folder of the icons when the window loads this file */
+#RichPresenceSettings QSpinBox::up-arrow {
+    image: url("{icons}/chevron-up.svg");
+    width: 10px;
+    height: 10px;
+}
+
+#RichPresenceSettings QSpinBox::down-arrow {
+    image: url("{icons}/chevron-down.svg");
+    width: 10px;
+    height: 10px;
+}
+
+#RichPresenceSettings QFrame#segmented {
+    background-color: #1E1F22;
+    border-radius: 6px;
+}
+
+#RichPresenceSettings QPushButton#segment {
+    background-color: transparent;
+    color: #B5BAC1;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+#RichPresenceSettings QPushButton#segment:hover {
+    background-color: #35373C;
+    color: #F2F3F5;
+}
+
+#RichPresenceSettings QPushButton#segment:checked {
+    background-color: #5865F2;
+    color: #FFFFFF;
+}
+
+#RichPresenceSettings QPushButton#chip {
+    background-color: #35373C;
+    color: #DBDEE1;
+    border: none;
+    border-radius: 10px;
+    padding: 3px 10px;
+    font-size: 8pt;
+}
+
+#RichPresenceSettings QPushButton#chip:hover {
+    background-color: #404249;
+    color: #FFFFFF;
+}
+
+#RichPresenceSettings QPushButton#primary {
+    background-color: #5865F2;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 20px;
+    font-weight: bold;
+}
+
+#RichPresenceSettings QPushButton#primary:hover {
+    background-color: #4752C4;
+}
+
+#RichPresenceSettings QPushButton#flat {
+    background-color: transparent;
+    color: #B5BAC1;
+    border: none;
+    padding: 7px 4px;
+}
+
+#RichPresenceSettings QPushButton#flat:hover {
+    color: #F2F3F5;
+}
+
+#RichPresenceSettings QScrollArea,
+#RichPresenceSettings QScrollArea > QWidget > QWidget {
+    background-color: transparent;
+    border: none;
+}
+
+#RichPresenceSettings QScrollBar:vertical {
+    background-color: transparent;
+    width: 8px;
+    margin: 0;
+}
+
+#RichPresenceSettings QScrollBar::handle:vertical {
+    background-color: #2B2D31;
+    border-radius: 4px;
+    min-height: 32px;
+}
+
+#RichPresenceSettings QScrollBar::add-line:vertical,
+#RichPresenceSettings QScrollBar::sub-line:vertical {
+    height: 0;
+}
+
+#RichPresenceSettings QScrollBar::add-page:vertical,
+#RichPresenceSettings QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+#RichPresenceSettings QFrame#previewPanel {
+    background-color: #111214;
+    border-radius: 8px;
+}
+
+#RichPresenceSettings QFrame#activityCard {
+    background-color: #232428;
+    border-radius: 8px;
+}
+
+#RichPresenceSettings QLabel#activityHeader {
+    color: #B5BAC1;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+#RichPresenceSettings QLabel#activityName {
+    color: #F2F3F5;
+    font-weight: bold;
+}
+
+#RichPresenceSettings QLabel#activityLine {
+    color: #DBDEE1;
+}
+
+#RichPresenceSettings QLabel#activityTimer {
+    color: #23A55A;
+}
+
+#RichPresenceSettings QLabel#activityButton {
+    background-color: #4E5058;
+    color: #FFFFFF;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+#RichPresenceSettings QLabel#banner {
+    background-color: #3D3423;
+    color: #F0B232;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+#RichPresenceSettings QLabel#hiddenNote {
+    background-color: #3B2A2C;
+    color: #FA777C;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+#RichPresenceSettings QLabel#hoverName {
+    color: #949BA4;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+#RichPresenceSettings QLabel#hoverText {
+    color: #DBDEE1;
+}
+
+QToolTip {
+    background-color: #111214;
+    color: #DBDEE1;
+    border: 1px solid #3F4147;
+    padding: 4px 6px;
 }

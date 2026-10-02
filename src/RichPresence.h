@@ -4,6 +4,7 @@
 #include <string>
 #include <maya/MTimerMessage.h>
 #include <maya/MString.h>
+#include <maya/MStringArray.h>
 
 #include "discordpp.h"
 
@@ -70,6 +71,18 @@ private:
 	MString buttonLabel;
 	MString buttonUrl;
 
+	// Small icon over the Maya logo: "task", "renderer", "custom" or "none"
+	MString smallIcon = "task";
+	// Image chosen by the Python script for the task and renderer icons, and the text shown when hovering it
+	MString smallImage;
+	MString smallText;
+	// Link and text of the custom icon, the text with the same placeholders as the custom text
+	MString customIconUrl;
+	MString customIconText;
+	bool playblasting = false;
+	// Off when the user hides their status, from the settings or the Rich Presence menu
+	bool statusEnabled = true;
+
 	// Text written by the user to replace either line, with {task}, {scene}, {project} and {stats}
 	MString customDetails;
 	MString customState;
@@ -86,6 +99,7 @@ private:
 	MCallbackId projectChangeCallbackId = -1;
 	std::vector<MCallbackId> sceneCallbackIds;
 	MCallbackId runCallbacksTimerId = -1;
+	MCallbackId playblastCallbackId = -1;
 
 	inline static std::unique_ptr<discordpp::Client> client;
 	inline static discordpp::Activity activity;
@@ -118,6 +132,7 @@ private:
 	void PollMayaState();
 	bool NeedsSceneStats() const;
 	bool RefreshSceneStats();
+	bool RefreshSmallImage();
 
 	MString SceneText() const;
 	bool TemplatesUse(const MString& placeholder) const;
@@ -128,9 +143,10 @@ private:
 	void RegisterUserActivity();
 	void CheckIdle();
 	void LeaveIdle();
-	bool IsHidden() const { return idle && idleAction == IdleAction::Hide; }
+	bool IsHidden() const { return !statusEnabled || (idle && idleAction == IdleAction::Hide); }
 
 	static void OnTimer(float elapsedTime, float lastTime, void* clientData);
+	static void OnPlayblastChange(bool state, void* clientData);
 	static void OnUpdateResult(const discordpp::ClientResult& result);
 
 public:
@@ -175,4 +191,10 @@ public:
 	void SetCustomDetails(MString text);
 	void SetCustomState(MString text);
 	void SetCustomTextWhileIdle(bool keep);
+	void SetSmallIcon(MString icon);
+	void SetCustomIconUrl(MString url);
+	void SetCustomIconText(MString text);
+	void SetStatusEnabled(bool enabled);
+
+	MStringArray Preview() const;
 };

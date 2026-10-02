@@ -19,7 +19,7 @@ void OnMayaExiting(void* clientData)
 
 MStatus initializePlugin(MObject obj)
 {
-	MFnPlugin fnPlugin(obj, "Aron Amao", "2.1", "Any");
+	MFnPlugin fnPlugin(obj, "Aron Amao", "2.2", "Any");
 	MStatus status = fnPlugin.registerCommand("richPresence", RichPresenceCmd::creator, RichPresenceCmd::NewSyntax);
 	if (!status) {
 		MGlobal::displayError("Failed to register richPresence command: " + status.errorString());

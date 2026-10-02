@@ -4,6 +4,7 @@
 #include <maya/MFileIO.h>
 #include <maya/MEventMessage.h>
 #include <maya/MSceneMessage.h>
+#include <maya/MConditionMessage.h>
 #include <maya/MStringArray.h>
 #include <maya/MItDependencyNodes.h>
 #include <maya/MFnMesh.h>
@@ -67,6 +68,12 @@ namespace
 		return web && url.size() <= 512 && url.find(' ') == std::string::npos;
 	}
 
+	// An image is a link, or the name of an image uploaded to the Discord application
+	bool IsValidImage(const std::string& image)
+	{
+		return !image.empty() && image.size() <= 256 && image.find(' ') == std::string::npos;
+	}
+
 	const MString SEPARATOR(L" \u00B7 ");
 }
 
@@ -81,6 +88,7 @@ RichPresence::~RichPresence()
 	BlockUpdates();
 	Disable();
 	MMessage::removeCallback(runCallbacksTimerId);
+	MMessage::removeCallback(playblastCallbackId);
 	// Remove the status right away instead of waiting for Discord to notice the disconnection
 	client->ClearRichPresence();
 	client.reset();
@@ -114,6 +122,8 @@ void RichPresence::Enable()
 	displayScene = (section.get("details") == "true");
 	displayProject = (section.get("state") == "true");
 	customTextWhileIdle = (section.get("custom_text_while_idle") == "true");
+	// Settings from before this option existed don't have it, and the status is shown by default
+	statusEnabled = !section.has("enabled") || section.get("enabled") == "true";
 	OnFileChange(nullptr); // we run it once manually to force a refresh
 	OnProjectChange(nullptr);
 
@@ -156,6 +166,7 @@ void RichPresence::Initialize()
 	client->SetApplicationId(APPLICATION_ID);
 	// The SDK only delivers its results when RunCallbacks is called regularly
 	runCallbacksTimerId = MTimerMessage::addTimerCallback(0.5f, OnTimer);
+	playblastCallbackId = MConditionMessage::addConditionCallback("playblasting", OnPlayblastChange);
 }
 
 void RichPresence::Update()
@@ -184,6 +195,14 @@ void RichPresence::BuildActivity()
 	if (rendererName.length())
 		largeText += SEPARATOR + rendererName;
 	assets.SetLargeText(ToDiscordText(largeText));
+	// The small icon over the Maya logo, and the text shown when hovering it
+	bool customIcon = smallIcon == "custom";
+	std::string image = (customIcon ? customIconUrl : smallImage).asUTF8();
+	if (IsValidImage(image))
+	{
+		assets.SetSmallImage(image);
+		assets.SetSmallText(ToDiscordText(customIcon ? ExpandTemplate(customIconText) : smallText));
+	}
 	built.SetAssets(assets);
 
 	std::optional<std::string> label = ToDiscordText(buttonLabel, 1, 32);
@@ -253,6 +272,19 @@ void RichPresence::OnTimer(float elapsedTime, float lastTime, void* clientData)
 	instance->FlushUpdate();
 }
 
+// Maya doesn't run the timer during a playblast, so the icon changes as soon as one starts or ends
+void RichPresence::OnPlayblastChange(bool state, void* clientData)
+{
+	if (!instance)
+		return;
+	instance->playblasting = state;
+	if (!instance->RefreshSmallImage())
+		return;
+	// The result of the last update is collected first, so this one can go out before the playblast keeps Maya busy
+	discordpp::RunCallbacks();
+	instance->Update();
+}
+
 void RichPresence::PollMayaState()
 {
 	if (UserInputInMaya())
@@ -280,7 +312,8 @@ void RichPresence::PollMayaState()
 		nextStatsPoll = Clock::now() + std::max<Clock::duration>(STATS_INTERVAL, (Clock::now() - start) * 1000);
 	}
 
-	if ((modified != 0) == sceneModified && newTask == task && newRenderer == rendererName && !statsChanged)
+	bool iconChanged = RefreshSmallImage();
+	if ((modified != 0) == sceneModified && newTask == task && newRenderer == rendererName && !statsChanged && !iconChanged)
 		return;
 	sceneModified = modified != 0;
 	task = newTask;
@@ -329,6 +362,26 @@ bool RichPresence::RefreshSceneStats()
 	return true;
 }
 
+// The icon over the Maya logo and its text are chosen by a Python script, so they can be changed without recompiling.
+// Returns whether they changed.
+bool RichPresence::RefreshSmallImage()
+{
+	MStringArray result;
+	if (contextScriptAvailable && (smallIcon == "task" || smallIcon == "renderer"))
+	{
+		MString command = MString("__import__('RichPresenceUI.context', fromlist=['']).small_image('") + smallIcon
+			+ "', " + (idle ? "True" : "False") + ", " + (playblasting ? "True" : "False") + ")";
+		MGlobal::executePythonCommand(command, result);
+	}
+	MString image = result.length() > 0 ? result[0] : MString();
+	MString text = result.length() > 1 ? result[1] : MString();
+	if (image == smallImage && text == smallText)
+		return false;
+	smallImage = image;
+	smallText = text;
+	return true;
+}
+
 // True when the keyboard or mouse was used since the last check while Maya was the active application,
 // so typing in a web browser doesn't count as working in Maya.
 bool RichPresence::UserInputInMaya()
@@ -364,6 +417,7 @@ void RichPresence::CheckIdle()
 		idle = true;
 		RefreshDetails();
 		RefreshState();
+		RefreshSmallImage();
 		Update();
 	}
 	else if (!shouldBeIdle && idle)
@@ -383,6 +437,7 @@ void RichPresence::LeaveIdle()
 	idle = false;
 	RefreshDetails();
 	RefreshState();
+	RefreshSmallImage();
 	Update();
 }
 
@@ -594,7 +649,8 @@ MString RichPresence::SceneText() const
 
 bool RichPresence::TemplatesUse(const MString& placeholder) const
 {
-	return customDetails.indexW(placeholder) >= 0 || customState.indexW(placeholder) >= 0;
+	bool iconUses = smallIcon == "custom" && customIconText.indexW(placeholder) >= 0;
+	return customDetails.indexW(placeholder) >= 0 || customState.indexW(placeholder) >= 0 || iconUses;
 }
 
 MString RichPresence::ExpandTemplate(const MString& text) const
@@ -685,4 +741,55 @@ void RichPresence::SetIdleAction(MString action)
 		idleAction = IdleAction::Show;
 	CheckIdle();
 	RefreshDetails();
+}
+
+void RichPresence::SetSmallIcon(MString icon)
+{
+	smallIcon = (icon == "renderer" || icon == "custom" || icon == "none") ? icon : MString("task");
+	if (NeedsSceneStats())
+		RefreshSceneStats();
+	RefreshSmallImage();
+}
+
+void RichPresence::SetCustomIconUrl(MString url)
+{
+	customIconUrl = url;
+}
+
+void RichPresence::SetCustomIconText(MString text)
+{
+	customIconText = text;
+	if (NeedsSceneStats())
+		RefreshSceneStats();
+}
+
+void RichPresence::SetStatusEnabled(bool enabled)
+{
+	statusEnabled = enabled;
+}
+
+// What Discord is shown, for the preview in the settings window, as "name=value" lines
+MStringArray RichPresence::Preview() const
+{
+	auto toMString = [](const std::optional<std::string>& text) {
+		MString value;
+		if (text)
+			value.setUTF8(text->c_str());
+		return value;
+	};
+	std::optional<discordpp::ActivityAssets> assets = activity.Assets();
+	std::optional<discordpp::ActivityTimestamps> timestamps = activity.Timestamps();
+	std::vector<discordpp::ActivityButton> buttons = activity.GetButtons();
+
+	MStringArray lines;
+	lines.append(MString("details=") + toMString(activity.Details()));
+	lines.append(MString("state=") + toMString(activity.State()));
+	lines.append(MString("largeText=") + toMString(assets ? assets->LargeText() : std::nullopt));
+	lines.append(MString("smallImage=") + toMString(assets ? assets->SmallImage() : std::nullopt));
+	lines.append(MString("smallText=") + toMString(assets ? assets->SmallText() : std::nullopt));
+	lines.append(MString("timerStart=") + (timestamps ? std::to_string(timestamps->Start()).c_str() : ""));
+	lines.append(MString("buttonLabel=") + toMString(buttons.empty() ? std::nullopt : std::optional<std::string>(buttons[0].Label())));
+	// Why nothing is shown: "off" when the user hid their status, "away" when it is hidden while idle
+	lines.append(MString("hidden=") + (!statusEnabled ? "off" : IsHidden() ? "away" : ""));
+	return lines;
 }

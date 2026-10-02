@@ -18,6 +18,10 @@ Discord Rich Presence for Autodesk Maya. Shows what you are doing in Maya in you
 - **Idle detection**: shows "Idle" or hides your status, and the time away isn't counted.
 - **Button** with a link, to your portfolio for example.
 - **Maya logo**, with the Maya version and renderer on hover.
+- **Small icon** on the Maya logo: your current task, your renderer or your own image, with one more detail on hover
+  (the tool, the frame range, the renderer's version...).
+- **Settings window** with a live preview of what your friends see, where every change applies right away.
+- **Show My Status in Discord**, in the Rich Presence menu, to hide your status in one click.
 - **One-click install** with no restart, and updates that keep your settings.
 - **Fixes**: names with accents, "Save As", settings turning themselves back on, crash when reloading the plug-in, install failing when the Windows user name contains an accent.
 
@@ -52,20 +56,20 @@ doesn't remove the others.
 
 ## Settings
 
-**Rich Presence > Settings**, in Maya's menu bar.
+**Rich Presence > Settings**, in Maya's menu bar. The window shows what your friends see, updated live
+from Maya, and every change is applied and saved right away. You can keep it open while you work.
 
 | Setting | What it does |
 |---|---|
-| **Details** | Shows the scene name. |
-| **Task** | Shows the current task. |
-| **State** | Shows the project, or scene statistics when no project is set. |
-| **Reset Time With Scene** | Resets the timer when a scene is opened. |
-| **Custom Text** | Replaces the first or second line with your own text. Leave it empty for the automatic text. |
-| **Idle** | After the chosen time without using Maya: shows "Idle", hides your status, or does nothing. The timer pauses. |
-| **Custom Text While Idle** | Keeps your custom text while idle. |
+| **Show my status** | Shows or hides your status in Discord. Also in the Rich Presence menu: **Show My Status in Discord**. |
+| **First line** | Automatic: the task and the scene name, each with its switch. Or your own text. |
+| **Second line** | Automatic: the project, or the size of the scene when no project is set. Or your own text. |
+| **Small icon** | The small round icon on the Maya logo: the current task, the renderer, your own image (a link to a PNG or JPG, with a text shown on hover), or none. |
 | **Button** | Adds a button with a link. Your friends see it, but Discord doesn't show it to you. |
+| **When you're away** | After the chosen time without using Maya: shows "Idle", hides your status, or does nothing. The timer pauses. |
+| **Timer** | Restarts the timer when a scene is opened. |
 
-Placeholders for the custom text:
+In your own text, the **Task**, **Scene**, **Project** and **Stats** buttons insert these placeholders:
 
 | Placeholder | Replaced by |
 |---|---|
@@ -76,7 +80,7 @@ Placeholders for the custom text:
 
 Example: `{task} on {scene}` shows "Modeling on hero.ma".
 
-**To hide your status**, unload `DRPForMaya.mll` in **Windows > Settings/Preferences > Plug-in Manager**.
+**To hide your status**, uncheck **Rich Presence > Show My Status in Discord**.
 
 ## Uninstalling
 
@@ -102,7 +106,10 @@ Example: `{task} on {scene}` shows "Modeling on hero.ma".
   - `build.bat 2025 C:\maya_devkits\2025\devkitBase` builds with a [Maya devkit](https://aps.autodesk.com/developer/overview/maya).
 
   The built plug-in is copied to `module/plug-ins/<version>`. The original CMake files are still there, but haven't been tested with this version.
-- **Changing the wording** of the task and statistics: edit `module/scripts/RichPresenceUI/context.py`, no rebuild needed.
+- **Changing the wording** of the task and statistics, or how tasks are detected: edit `module/scripts/RichPresenceUI/context.py`, no rebuild needed.
+- **Small icons**: `assets/icons`. Edit the `.svg` files, then run `mayapy assets/icons/export_icons.py` to update the `.png` files.
+  Discord downloads the `.png` files from this GitHub repository (`ICON_URL` in `context.py`), so push them before releasing,
+  and raise `v=` in `ICON_URL` after changing an icon so Discord doesn't keep the old one.
 - **Distributing**: `python package.py 2.1` builds the release zips in `dist/`: one with every Maya version,
   and one per Maya version. Attach them to a GitHub release.
 

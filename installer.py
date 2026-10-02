@@ -170,8 +170,7 @@ class Installer(QtWidgets.QDialog):
                                  "Your status will show up as soon as you open the Discord desktop app.")
         self.console.add_divider()
         self.console.log("Settings are in the new 'Rich Presence' menu of Maya's menu bar.\n"
-                         "To hide your status, unload DRPForMaya.mll in\n"
-                         "Windows > Settings/Preferences > Plug-in Manager.")
+                         "To hide your status, uncheck Rich Presence > Show My Status in Discord.")
         self.console.add_divider()
         self.console.log(f"To uninstall, simply delete {module_name}.mod and the {module_name} directory from \n{self.target_dir.parent}")
 

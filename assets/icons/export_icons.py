@@ -1,5 +1,6 @@
 """
-Exports the icons of this folder from .svg to .png, the format Discord accepts, at the size it recommends.
+Exports the icons of this folder from .svg to .png, the format Discord accepts, at the size it recommends,
+and small copies for the preview of the settings window, which ship with the plug-in.
 
     mayapy export_icons.py
 
@@ -15,6 +16,9 @@ except ImportError:
     from PySide2 import QtCore, QtGui, QtSvg
 
 SIZE = 1024
+PREVIEW_SIZE = 128
+FOLDER = pathlib.Path(__file__).resolve().parent
+PREVIEW_FOLDER = FOLDER.parents[1] / "module" / "scripts" / "RichPresenceUI" / "icons"
 
 
 def export(svg_path, png_path, size=SIZE):
@@ -34,8 +38,10 @@ def export(svg_path, png_path, size=SIZE):
 def main():
     # Fonts, used by the renderer icons, need an application
     application = QtGui.QGuiApplication.instance() or QtGui.QGuiApplication(sys.argv)
-    for svg_path in sorted(pathlib.Path(__file__).resolve().parent.glob("*.svg")):
+    PREVIEW_FOLDER.mkdir(parents=True, exist_ok=True)
+    for svg_path in sorted(FOLDER.glob("*.svg")):
         export(svg_path, svg_path.with_suffix(".png"))
+        export(svg_path, PREVIEW_FOLDER / f"{svg_path.stem}.png", PREVIEW_SIZE)
         print(svg_path.with_suffix(".png").name)
 
 
