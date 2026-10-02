@@ -2,6 +2,12 @@
 
 Discord Rich Presence for Autodesk Maya. Shows what you are doing in Maya in your Discord status: the current task, the scene, the project and how long you've been working.
 
+<p align="center">
+  <img src="docs/images/status.png" width="400" alt="The status: Autodesk Maya, Sculpting · hero.ma*, Spaceship, 00:06 elapsed, a sculpting icon on the Maya logo and a My portfolio button. Hovering the icon shows Sculpting · Grab Tool.">
+  <br>
+  <em>Your status, as the settings window previews it.</em>
+</p>
+
 > An improved version of [Discord-Rich-Presence-For-Maya](https://github.com/aronamao/Discord-Rich-Presence-For-Maya) by Aron Amao, with new features and Maya 2027 support.
 
 > [!WARNING]
@@ -59,6 +65,10 @@ doesn't remove the others.
 **Rich Presence > Settings**, in Maya's menu bar. The window shows what your friends see, updated live
 from Maya, and every change is applied and saved right away. You can keep it open while you work.
 
+<p align="center">
+  <img src="docs/images/settings.png" width="760" alt="The settings window: the settings on the left, a live preview of the status on the right.">
+</p>
+
 | Setting | What it does |
 |---|---|
 | **Show my status** | Shows or hides your status in Discord. Also in the Rich Presence menu: **Show My Status in Discord**. |
@@ -81,6 +91,15 @@ In your own text, the **Task**, **Scene**, **Project** and **Stats** buttons ins
 Example: `{task} on {scene}` shows "Modeling on hero.ma".
 
 **To hide your status**, uncheck **Rich Presence > Show My Status in Discord**.
+
+### Small icons
+
+The icon on the Maya logo changes with what you're doing, or shows your renderer. Hovering it in Discord shows one more detail:
+the tool, the frame range and fps, or the renderer's version.
+
+<p align="center">
+  <img src="docs/images/icons.png" width="760" alt="The icons: Modeling, Sculpting, UV editing, Shading, Lighting, Animating, Rigging, Simulating, Rendering, Scripting, Painting, Idle and Playblast for tasks; Arnold, V-Ray, Redshift, RenderMan, Maya Software, Maya Hardware 2.0 and other renderers.">
+</p>
 
 ## Uninstalling
 
